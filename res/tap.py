@@ -5,5 +5,5 @@
   
 """
 video = (1020, 245)
-close_video = (965, 120)
+close_video = (970, 100)
 video_ok = (760, 1450)

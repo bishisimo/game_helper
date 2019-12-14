@@ -39,11 +39,11 @@ class Auto:
     def watch_video(self, n=1):
         for i in range(n):
             adb.tap(*tap.video)
-            # time.sleep(1)
-            # self.tab_img(img_locate.PATH_OK_810_1440)
             adb.tap(*tap.video_ok)
-            time.sleep(28)
+            logger.info('开始广告')
+            time.sleep(30)
             adb.tap(*tap.close_video)
+            logger.info('关闭广告')
             adb.tap(*self.any_where)
             time.sleep(1)
 

@@ -67,7 +67,7 @@ class AdbNio:
         cmd = f'adb shell input swipe {start_x} {start_y} {end_x} {end_y} {delay}'
         self._exe(cmd)
 
-    def tap_l(self, start_x, start_y, delay=500):
+    def tap_long(self, start_x, start_y, delay=500):
         cmd = f'adb shell input swipe {start_x} {start_y} {start_x} {start_y} {delay}'
         self._exe(cmd)
 
@@ -79,4 +79,4 @@ if __name__ == '__main__':
     # with open('../temp/sc.png', 'wb')as file:
     #     file.write(pic)
     # adb.tap(450, 313)
-    adb.tap_l(740, 180, 2000)
+    adb.tap_long(740, 180, 2000)

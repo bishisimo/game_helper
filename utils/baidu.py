@@ -47,11 +47,14 @@ class Baidu:
         params = {'access_token': self.baidu_token}
         data = {'image': img_base64}
         r = requests.post(url, data, params=params, headers=headers).json()
-        words_result = r['words_result']
-        logger.debug(words_result)
-        result = ''
-        for word in words_result:
-            result+=word['words']
+        try:
+            words_result = r['words_result']
+            result = ''
+            for word in words_result:
+                result+=word['words']
+        except:
+            logger.error(r)
+        logger.debug(result)
         return result
 
 

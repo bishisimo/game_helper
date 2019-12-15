@@ -5,4 +5,6 @@
   
 """
 replay = '是否继续未完成的探险'
-double_income='收益加倍'
+double_income = '收益加倍'
+free_charge = '免费充电'
+re_adventure='再次探险'

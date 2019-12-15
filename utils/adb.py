@@ -10,24 +10,6 @@ from loguru import logger
 
 
 class AdbNio:
-    XY_OPEN = (450, 313)
-    XY_DOUBLE_INCOME = (300, 1100)
-    XY_START_ADVENTURE_1 = (600, 650)
-    XY_COLLECT_LIST = [
-        (760, 1065),
-        (760, 605),
-        (760, 925),
-        (760, 1235),  # 面粉
-        (760, 565),  # 面粉
-        (760, 935),  # 面粉
-        (760, 1225),  # 面粉
-        (760, 465),  # 面粉
-        (760, 465 + 370),  # 面粉
-        (760, 465 + 370 * 2),  # 转
-        (760, 865),  # 转
-    ]
-    XY_HOME = (50, 1175)
-
     def __init__(self):
         cmd = 'adb devices'
         statue = self._exe(cmd)

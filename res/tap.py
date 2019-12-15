@@ -4,6 +4,12 @@
 @describe:
   
 """
-video = (1020, 245)
-close_video = (970, 100)
-video_ok = (760, 1450)
+XY_video = (1020, 245)
+XY_close_video = (970, 100)
+XY_video_ok = (760, 1450)
+
+XY_START_ADVENTURE=(822,1083)
+XY_free_charge=(170,1550)
+XY_re_adventure=(772,2222)
+XY_use=(766,1360)
+XY_re_adventure_ok=(800,1360)

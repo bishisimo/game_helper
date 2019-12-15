@@ -38,11 +38,11 @@ class Auto:
 
     def watch_video(self, n=1):
         for i in range(n):
-            adb.tap(*tap.video)
-            adb.tap(*tap.video_ok)
+            adb.tap(*tap.XY_video)
+            adb.tap(*tap.XY_video_ok)
             logger.info('开始广告')
-            time.sleep(30)
-            adb.tap(*tap.close_video)
+            time.sleep(35)
+            adb.tap(*tap.XY_close_video)
             logger.info('关闭广告')
             adb.tap(*self.any_where)
             time.sleep(1)
@@ -59,13 +59,22 @@ class Auto:
             adb.tap(*adb.XY_DOUBLE_INCOME)
 
     def start_adventure(self):
-        adb.tap(*adb.XY_START_ADVENTURE_1)
+        # 开始第一次冒险
+        adb.tap(*tap.XY_START_ADVENTURE)
+        # 后续冒险
+        num=1
         while True:
-            time.sleep(2)
-            try:
-                self.tab_img(img_locate.PATH_OK_810_1440)
-            except Exception:
-                pass
+            time.sleep(10)
+            text=ocr.baidu()
+            if fields.free_charge in text:
+                adb.tap(*tap.XY_free_charge)
+                adb.tap(*tap.XY_use)
+            elif fields.re_adventure in text:
+                adb.tap(*tap.XY_re_adventure)
+                adb.tap(*tap.XY_re_adventure_ok)
+                num+=1
+                logger.info(f'第{num}次冒险结束!')
+
 
     def collect(self):
         adb.swipe(400, 150, 400, 1300)
@@ -106,7 +115,6 @@ auto = Auto()
 if __name__ == '__main__':
     # auto.run_app()
     # auto.double_income()
-    auto.watch_video(100)
-    # auto.start_adventure()
-    # auto.collect()
+    # auto.watch_video(100)
+    auto.start_adventure()
     # auto.collect()

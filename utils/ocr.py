@@ -6,7 +6,7 @@
 """
 import base64
 
-import pytesseract
+# import pytesseract
 
 from loguru import logger
 
@@ -17,19 +17,13 @@ from utils.image_converter import byte2img
 
 
 class Ocr:
-    pytesseract.pytesseract.tesseract_cmd = pytesseract_path
+    # pytesseract.pytesseract.tesseract_cmd = pytesseract_path
 
-    # def __init__(self):
-    #     byte_img = adb.shot_screen()
-    #     io_file = io.BytesIO(byte_img)
-    #     img = Image.open('../temp/ss.bmp')
+    # def pytesseract(self):
+    #     img = byte2img(adb.shot_screen())
     #     text = pytesseract.image_to_string(img, lang='chi_sim')
-    #     print(text)
-    def pytesseract(self):
-        img = byte2img(adb.shot_screen())
-        text = pytesseract.image_to_string(img, lang='chi_sim')
-        logger.debug(text)
-        return text
+    #     logger.debug(text)
+    #     return text
 
     def baidu(self):
         img_byte = adb.shot_screen()

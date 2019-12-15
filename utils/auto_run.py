@@ -73,7 +73,23 @@ class Auto:
                 adb.tap(*tap.XY_re_adventure)
                 adb.tap(*tap.XY_re_adventure_ok)
                 num+=1
-                logger.info(f'第{num}次冒险结束!')
+                logger.info(f'第{num}次冒险开始...')
+
+    def analysis_ocr(self, data):
+        data_list = data.split('@')[1:-1]
+        for data in data_list:
+            if '/' in data:
+                num_list = data.split('/')
+                current_num = int(num_list[0])
+                origin_target_num = num_list[1]
+                target_num = 0
+                for char in origin_target_num:
+                    target_num = target_num * 10 + int(char)
+                    if target_num >= current_num:
+                        pass
+
+    def check_adventure_stop(self,text):
+        pass
 
 
     def collect(self):

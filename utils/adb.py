@@ -37,8 +37,8 @@ class AdbNio:
         cmd = f'adb shell screencap -p'
         out_origin = self._exe(cmd)
         out = out_origin.replace(b'\r\n', b'\n')
-        with open(f'{root}/temp/sc_t.png', 'wb')as file:
-            file.write(out)
+        # with open(f'{root}/temp/sc_t.png', 'wb')as file:
+        #     file.write(out)
         return out
 
     def tap(self, x, y):

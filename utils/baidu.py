@@ -54,7 +54,6 @@ class Baidu:
                 result+=word['words']
         except:
             logger.error(r)
-        logger.debug(result)
         return result
 
 

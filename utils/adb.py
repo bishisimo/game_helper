@@ -5,6 +5,8 @@
   通过adb.exe操纵Android
 """
 import subprocess
+
+from res import tap
 from root import root
 from loguru import logger
 
@@ -37,9 +39,10 @@ class AdbNio:
         cmd = f'adb shell screencap -p'
         out_origin = self._exe(cmd)
         out = out_origin.replace(b'\r\n', b'\n')
-        # with open(f'{root}/temp/sc_t.png', 'wb')as file:
+        # with open(f'{root}/temp/sc.png', 'wb')as file:
         #     file.write(out)
         return out
+
 
     def tap(self, x, y):
         cmd = f'adb shell input tap {x} {y}'
@@ -61,4 +64,5 @@ if __name__ == '__main__':
     # with open('../temp/sc.png', 'wb')as file:
     #     file.write(pic)
     # adb.tap(450, 313)
-    adb.tap_long(740, 180, 2000)
+    # adb.tap_long(*tap.XY_close_video_58, 1000)
+    adb.tap(*tap.XY_close_video_58)

@@ -34,5 +34,4 @@ class Ocr:
 
 ocr=Ocr()
 if __name__ == '__main__':
-    ocr = Ocr()
     ocr.baidu()

@@ -6,7 +6,6 @@
 """
 import os
 import time
-
 import pyautogui
 from PIL import Image
 from loguru import logger
@@ -41,11 +40,33 @@ class Auto:
             adb.tap(*tap.XY_video)
             adb.tap(*tap.XY_video_ok)
             logger.info('开始广告')
-            time.sleep(35)
-            adb.tap(*tap.XY_close_video)
+            time.sleep(1)
+            # 通过ocr读取广告时间
+            text = ocr.baidu()[:2]
+            if text.isdigit():
+                stop_time = int(text)
+                if stop_time<10:
+                    stop_time=30
+            else:
+                stop_time = 30
+            logger.debug(stop_time)
+            time.sleep(stop_time)
+            # 根据广告内容点击关闭按钮
+            text = ocr.baidu()
+            if '58' in text:
+                adb.tap(*tap.XY_close_video_58)
+                time.sleep(1)
+            else:
+                adb.tap(*tap.XY_close_video)
             logger.info('关闭广告')
             adb.tap(*self.any_where)
             time.sleep(1)
+            text = ocr.baidu()
+            text=text.split('秒')[0][-2:]
+            if text.isdigit():
+                sec = int(text)
+                logger.debug(f'广告还需{sec}s')
+                time.sleep(sec)
 
     def double_income(self):
         text = ocr.baidu()
@@ -58,39 +79,45 @@ class Auto:
             time.sleep(1)
             adb.tap(*adb.XY_DOUBLE_INCOME)
 
-    def start_adventure(self):
+    def start_adventure(self,index:int=1):
         # 开始第一次冒险
-        adb.tap(*tap.XY_START_ADVENTURE)
+        adb.tap(*tap.XY_START_ADVENTURE[index-1])
+        num = 1
         # 后续冒险
-        num=1
         while True:
             time.sleep(10)
-            text=ocr.baidu()
-            if fields.free_charge in text:
+            text = ocr.baidu()
+            if fields.free_charge in text or fields.free_refuel in text:
                 adb.tap(*tap.XY_free_charge)
                 adb.tap(*tap.XY_use)
             elif fields.re_adventure in text:
+                if self.is_adventure_stop:
+                    logger.warning(f'第{num}次冒险后暂停,需要升级!')
+                    return
                 adb.tap(*tap.XY_re_adventure)
                 adb.tap(*tap.XY_re_adventure_ok)
-                num+=1
+                num += 1
                 logger.info(f'第{num}次冒险开始...')
 
-    def analysis_ocr(self, data):
-        data_list = data.split('@')[1:-1]
-        for data in data_list:
-            if '/' in data:
-                num_list = data.split('/')
-                current_num = int(num_list[0])
-                origin_target_num = num_list[1]
-                target_num = 0
-                for char in origin_target_num:
-                    target_num = target_num * 10 + int(char)
-                    if target_num >= current_num:
-                        pass
-
-    def check_adventure_stop(self,text):
-        pass
-
+    @property
+    def is_adventure_stop(self):
+        result = False
+        target_num = 0
+        x_start = 150
+        x_end = 950
+        y_start = 1000
+        y_end = 1100
+        img_bk = byte2img(adb.shot_screen())
+        pix = img_bk.load()
+        for x in range(x_start, x_end):
+            for y in range(y_start, y_end):
+                color = pix[x, y][:-1]
+                if color == (141, 255, 0):
+                    target_num += 1
+        logger.info(f'目标像素个数为:{target_num}')
+        if target_num > 0:
+            result = True
+        return result
 
     def collect(self):
         adb.swipe(400, 150, 400, 1300)
@@ -129,8 +156,117 @@ class Auto:
 
 auto = Auto()
 if __name__ == '__main__':
-    # auto.run_app()
-    # auto.double_income()
-    # auto.watch_video(100)
-    auto.start_adventure()
-    # auto.collect()
+    auto.watch_video(1000)
+    # auto.start_adventure(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1
+    # auto.collect()00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000........

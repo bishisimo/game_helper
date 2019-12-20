@@ -31,4 +31,5 @@ class ImgLocate:
         return target_position.x, target_position.y
 
 
+
 img_locate = ImgLocate()

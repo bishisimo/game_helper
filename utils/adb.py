@@ -6,8 +6,7 @@
 """
 import subprocess
 
-from res import tap
-from root import root
+from config import tap
 from loguru import logger
 
 

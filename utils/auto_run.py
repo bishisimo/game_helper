@@ -4,14 +4,12 @@
 @describe:
   运行封装
 """
+import json
 import os
 import time
-import pyautogui
-from PIL import Image
 from loguru import logger
 
-from res import fields, tap
-from root import root
+from config import fields, tap
 from utils.adb import adb
 from utils.image_converter import byte2img
 from utils.img_locate import img_locate
@@ -35,14 +33,19 @@ class Auto:
         time.sleep(20)
         logger.info('app is running!')
 
-    def watch_video(self, n=1):
-        for i in range(n):
+    def watch_ad(self):
+        adb.tap(*tap.XY_ONE)
+        adb.tap(*tap.XY_ONE_MAIN)
+        i=0
+        while True:
+            i+=1
             adb.tap(*tap.XY_video)
             adb.tap(*tap.XY_video_ok)
-            logger.info('开始广告')
+            logger.info(f'第{i}次开始广告')
             time.sleep(1)
             # 通过ocr读取广告时间
-            text = ocr.baidu()[:2]
+            key=ocr.baidu()
+            text = key[:2]
             if text.isdigit():
                 stop_time = int(text)
                 if stop_time<10:
@@ -56,9 +59,19 @@ class Auto:
             if '58' in text:
                 adb.tap(*tap.XY_close_video_58)
                 time.sleep(1)
+            elif '预估收益烹饪' in text:
+                logger.error('第i次ad,误入cook!')
+                adb.tap(*tap.XY_LB_CLOSE)
+                adb.tap(*tap.XY_ONE_MAIN)
+                continue
+            elif '魔法药水每档首次购买获得双倍魔法药水' in text:
+                logger.error('第i次ad,误入shop!')
+                adb.tap(*tap.XY_LB_CLOSE)
+                adb.tap(*tap.XY_ONE_MAIN)
+                continue
             else:
                 adb.tap(*tap.XY_close_video)
-            logger.info('关闭广告')
+            logger.info(f'第{i}次广告完成')
             adb.tap(*self.any_where)
             time.sleep(1)
             text = ocr.baidu()
@@ -81,11 +94,13 @@ class Auto:
 
     def start_adventure(self,index:int=1):
         # 开始第一次冒险
-        adb.tap(*tap.XY_START_ADVENTURE[index-1])
+        adb.tap(*tap.XY_TOW)
+        adb.tap(*tap.XY_START_ADVENTURE[index - 1])
         num = 1
+        time.sleep(30)
         # 后续冒险
         while True:
-            time.sleep(10)
+            time.sleep(30)
             text = ocr.baidu()
             if fields.free_charge in text or fields.free_refuel in text:
                 adb.tap(*tap.XY_free_charge)
@@ -156,6 +171,6 @@ class Auto:
 
 auto = Auto()
 if __name__ == '__main__':
-    auto.watch_video(1000)
-    # auto.start_adventure(3)
+    auto.watch_ad()
+    # auto.start_adventure(1)
     # auto.collect()
